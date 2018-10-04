@@ -1,0 +1,8 @@
+{
+"name": "Exalted-Bot",
+"version": "1.0.0",
+"description": "Exalted 3rd edition dice roller",
+"main": "exaltedbot.js",
+"author": "Kira Selby",
+"dependencies": {}
+}
