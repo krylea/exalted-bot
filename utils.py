@@ -51,7 +51,8 @@ class Session(object):
     def execute_command(self, query):
         n, values, ro, ra, ex, rn, d, t = self.parse_roll(query)
         adjust_target(values, t)
-        buckets, successes = roll(n, values, rn, ro, ra, ex, d)
+        values = values[:d+1]
+        buckets, successes = roll(n, values, rn, ro, ra, ex)
         dice = buckets_to_dice(buckets)
         output = self.format_output(n, dice, successes)
         return output
@@ -63,7 +64,8 @@ class Session(object):
         return output
 
 
-def roll(n, values=DEFAULT_VALS, reroll_n=0, reroll_one=[], reroll_all=[], explode=[], d=10):
+def roll(n, values=DEFAULT_VALS, reroll_n=0, reroll_one=[], reroll_all=[], explode=[]):
+    d = len(values)-1
     buckets = roll_once(n, d)
 
     if len(reroll_one) > 0:
@@ -162,9 +164,9 @@ def parse_command(command, prefix_tokens=ROLL_PREFIXES):
 
 
 def adjust_target(values, target):
-    for v in values[target:]:
-        if v < 1:
-            v = 1
+    for i in range(target, len(values)):
+        if values[i] < 1:
+            values[i] = 1
 
 
 
